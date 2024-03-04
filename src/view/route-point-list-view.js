@@ -7,7 +7,7 @@ const createRoutePointListTemplate = () => (
 
 export default class RoutePointListView {
   getTemplate () {
-    return createRoutePointListTemplate;
+    return createRoutePointListTemplate();
   }
 
   getElement() {
