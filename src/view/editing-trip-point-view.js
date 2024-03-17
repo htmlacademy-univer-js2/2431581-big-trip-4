@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import { createElement } from '../render.js';
 import { getDateTime } from '../utils.js';
 
 const renderDestinationPictures = (pictures) => {
@@ -26,9 +26,9 @@ const renderOffers = (allOffers, checkedOffers) => {
   return result;
 };
 
-const createEditingRoutePointTemplate = (routePoint, destinations, offers) => {
-  const {basePrice, type, destinationId, dateFrom, dateTo, offerIds} = routePoint;
-  const allRoutePointTypeOffers = offers.find((offer) => offer.type === type);
+const createEditingtripPointTemplate = (tripPoint, destinations, offers) => {
+  const {basePrice, type, destinationId, dateFrom, dateTo, offerIds} = tripPoint;
+  const alltripPointTypeOffers = offers.find((offer) => offer.type === type);
   return (
     `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -115,7 +115,7 @@ const createEditingRoutePointTemplate = (routePoint, destinations, offers) => {
       <section class="event__details">
         <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-          ${renderOffers(allRoutePointTypeOffers.offers, offerIds)}
+          ${renderOffers(alltripPointTypeOffers.offers, offerIds)}
         </section>
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
@@ -132,15 +132,15 @@ const createEditingRoutePointTemplate = (routePoint, destinations, offers) => {
   );
 };
 
-export default class EditingRoutePointView {
-  constructor(routePoint, destination, offers) {
-    this.routePoint = routePoint;
+export default class EditingtripPointView {
+  constructor(tripPoint, destination, offers) {
+    this.tripPoint = tripPoint;
     this.destination = destination;
     this.offers = offers;
   }
 
   getTemplate() {
-    return createEditingRoutePointTemplate(this.routePoint, this.destination, this.offers);
+    return createEditingtripPointTemplate(this.tripPoint, this.destination, this.offers);
   }
 
   getElement() {

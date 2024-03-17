@@ -1,5 +1,5 @@
-import { createElement } from '../render';
-import { humanizeRoutePointDueDate, getDuration, getDate, getTime } from '../utils.js';
+import { createElement } from '../render.js';
+import { humanizetripPointDueDate, getDuration, getDate, getTime } from '../utils.js';
 
 const renderOffers = (allOffers, checkedOffers) => {
   if (!allOffers) {
@@ -14,12 +14,12 @@ const renderOffers = (allOffers, checkedOffers) => {
   return result;
 };
 
-const createRoutePointTemplate = (routePoint, destinations, offers) => {
-  const { basePrice, type, destinationId, isFavorite, dateFrom, dateTo, offerIds } = routePoint;
-  const allRoutePointTypeOffers = offers.find((offer) => offer.type === type);
+const createtripPointTemplate = (tripPoint, destinations, offers) => {
+  const { basePrice, type, destinationId, isFavorite, dateFrom, dateTo, offerIds } = tripPoint;
+  const alltripPointTypeOffers = offers.find((offer) => offer.type === type);
   const eventDuration = getDuration(dateFrom, dateTo);
-  const startDate = dateFrom !== null ? humanizeRoutePointDueDate(dateFrom) : '';
-  const endDate = dateTo !== null ? humanizeRoutePointDueDate(dateTo) : '';
+  const startDate = dateFrom !== null ? humanizetripPointDueDate(dateFrom) : '';
+  const endDate = dateTo !== null ? humanizetripPointDueDate(dateTo) : '';
   return (
     `<li class="trip-events__item">
       <div class="event">
@@ -41,7 +41,7 @@ const createRoutePointTemplate = (routePoint, destinations, offers) => {
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${renderOffers(allRoutePointTypeOffers.offers, offerIds)}
+        ${renderOffers(alltripPointTypeOffers.offers, offerIds)}
       </ul>
       <button class="event__favorite-btn ${isFavorite ? 'event__favorite-btn--active' : ''}" type="button">
       <span class="visually-hidden">Add to favorite</span>
@@ -57,15 +57,15 @@ const createRoutePointTemplate = (routePoint, destinations, offers) => {
   );
 };
 
-export default class RoutePointView {
-  constructor(routePoint, destination, offers) {
-    this.routePoint = routePoint;
+export default class tripPointView {
+  constructor(tripPoint, destination, offers) {
+    this.tripPoint = tripPoint;
     this.destination = destination;
     this.offers = offers;
   }
 
   getTemplate() {
-    return createRoutePointTemplate(this.routePoint, this.destination, this.offers);
+    return createtripPointTemplate(this.tripPoint, this.destination, this.offers);
   }
 
   getElement() {
