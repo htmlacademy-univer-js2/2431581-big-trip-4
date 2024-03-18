@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 
-const HOUR_MINUTES_COUNT = 60;
-const TOTAL_DAY_MINUTES_COUNT = 1440;
+const MINUTES_IN_HOUR = 60;
+const MINUTES_IN_DAY = 1440;
 const DATE_FORMAT = 'YYYY-MM-DD';
 const DATE_TIME_FORMAT = 'DD/MM/YY hh:mm';
 const TIME_FORMAT = 'hh:mm';
 
-const humanizeRoutePointDueDate = (date) => dayjs(date).format('DD MMM');
+const humanizetripPointDueDate = (date) => dayjs(date).format('DD MMM');
 
 const getDaysOutput = (days) => days <= 0 ? '' : `${`${days}`.padStart(2, '0')}D`;
 
@@ -19,9 +19,9 @@ const getDuration = (dateFrom, dateTo) => {
   const end = dayjs(dateTo);
   const difference = end.diff(start, 'minute');
 
-  const days = Math.trunc(difference / TOTAL_DAY_MINUTES_COUNT);
-  const restHours = Math.trunc((difference - days * TOTAL_DAY_MINUTES_COUNT) / HOUR_MINUTES_COUNT);
-  const restMinutes = difference - (days * TOTAL_DAY_MINUTES_COUNT + restHours * HOUR_MINUTES_COUNT);
+  const days = Math.trunc(difference / MINUTES_IN_DAY);
+  const restHours = Math.trunc((difference - days * MINUTES_IN_DAY) / MINUTES_IN_HOUR);
+  const restMinutes = difference - (days * MINUTES_IN_DAY + restHours * MINUTES_IN_HOUR);
 
   const daysOutput = getDaysOutput(days);
   const hoursOutput = getHoursOutput(days, restHours);
@@ -49,4 +49,4 @@ const getRandomElement = (elements) => {
   return elements[getRandomInteger(MIN, max)];
 };
 
-export { getRandomInteger, getRandomElement, humanizeRoutePointDueDate, getDuration, getDate, getDateTime, getTime };
+export { getRandomInteger, getRandomElement, humanizetripPointDueDate, getDuration, getDate, getDateTime, getTime };

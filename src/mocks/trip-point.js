@@ -1,9 +1,9 @@
-import { getRandomInteger, getRandomElement } from '../utils.js';
 import dayjs from 'dayjs';
+import { getRandomInteger, getRandomElement } from '../utils.js';
 
-const ROUTE_POINTS_COUNT = 20;
+const TRIP_POINTS_COUNT = 20;
 
-const ROUTE_POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const TRIP_POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
 const DESTINATION_NAMES = ['Amsterdam', 'Chamonix', 'Geneva', 'London'];
 
@@ -57,26 +57,26 @@ const generateDestination = (id) => ({
 
 const getDestinations = () => Array.from({length: DESTINATION_NAMES.length}).map((_, index) => generateDestination(index));
 
-const generateOffer = (id, routePointType) => ({
+const generateOffer = (id, tripPointType) => ({
   id,
-  title: `offer for ${routePointType}`,
+  title: `offer for ${tripPointType}`,
   price: getRandomInteger(Price.MIN, Price.MAX)
 });
 
-const generateOffersByType = (routePointType) => ({
-  type: routePointType,
-  offers: Array.from({length: getRandomInteger(ElementsCount.MIN, ElementsCount.MAX)}).map((_, index) => generateOffer(index + 1, routePointType
+const generateOffersByType = (tripPointType) => ({
+  type: tripPointType,
+  offers: Array.from({length: getRandomInteger(ElementsCount.MIN, ElementsCount.MAX)}).map((_, index) => generateOffer(index + 1, tripPointType
   )),
 });
 
-const getOffersByType = () => Array.from({length: ROUTE_POINT_TYPES.length}).map((_, index) => generateOffersByType(ROUTE_POINT_TYPES[index]));
+const getOffersByType = () => Array.from({length: TRIP_POINT_TYPES.length}).map((_, index) => generateOffersByType(TRIP_POINT_TYPES[index]));
 
 const offersByType = getOffersByType();
 const destinations = getDestinations();
 
-const generateRoutePoint = (id) => {
-  const offersByTypeRoutePoint = getRandomElement(offersByType);
-  const allOfferIdsByTypeRoutePoint = offersByTypeRoutePoint.offers.map((offer) => offer.id);
+const generateTripPoint = (id) => {
+  const offersByTypetripPoint = getRandomElement(offersByType);
+  const allOfferIdsByTypetripPoint = offersByTypetripPoint.offers.map((offer) => offer.id);
   return {
     basePrice: getRandomInteger(Price.MIN, Price.MAX),
     dateFrom: dayjs().add(getRandomInteger(-3, 0), 'day').add(getRandomInteger(-2, 0), 'hour').add(getRandomInteger(-59, 0), 'minute'),
@@ -84,12 +84,12 @@ const generateRoutePoint = (id) => {
     destinationId: getRandomElement(destinations).id,
     id,
     isFavorite: Boolean(getRandomInteger()),
-    offerIds: Array.from({length: getRandomInteger(0, allOfferIdsByTypeRoutePoint.length)}).map(() => allOfferIdsByTypeRoutePoint[getRandomInteger(0, allOfferIdsByTypeRoutePoint.length - 1)]),
-    type: offersByTypeRoutePoint.type,
+    offerIds: Array.from({length: getRandomInteger(0, allOfferIdsByTypetripPoint.length)}).map(() => allOfferIdsByTypetripPoint[getRandomInteger(0, allOfferIdsByTypetripPoint.length - 1)]),
+    type: offersByTypetripPoint.type,
   };
 };
 
 
-const getRoutePoints = () => Array.from({length: ROUTE_POINTS_COUNT}).map((_, index) => generateRoutePoint (index + 1));
+const getTripPoints = () => Array.from({length: TRIP_POINTS_COUNT}).map((_, index) => generateTripPoint (index + 1));
 
-export { getRoutePoints, getDestinations, getOffersByType };
+export { getTripPoints, getDestinations, getOffersByType };
