@@ -1,28 +1,74 @@
-import EventsView from '../view/trip-point-list-view.js';
-import tripPointView from '../view/trip-point-view.js';
-import EditingtripPointView from '../view/editing-trip-point-view.js';
+import TripPointView from '../view/trip-point-view.js';
+import EditingTripPointView from '../view/editing-trip-point-view.js';
 import SortingView from '../view/sorting-view.js';
-import { render } from '../render.js';
+import { render, replace } from '../framework/render.js';
+import TripPointListView from '../view/trip-point-list-view.js';
 
-export default class tripPointPresenter {
+export default class TripPointPresenter {
+  #tripPointsList = null;
+  #tripContainer = null;
+  #tripPointsModel = null;
+  #tripPoints = null;
+  #destinations = null;
+  #offers = null;
+
   constructor(tripContainer) {
-    this.eventsList = new EventsView();
-    this.tripContainer = tripContainer;
+    this.#tripPointsList = new TripPointListView();
+    this.#tripContainer = tripContainer;
   }
 
   init (tripPointsModel) {
-    this.tripPointsModel = tripPointsModel;
-    this.tripPoints = [...this.tripPointsModel.getTripPoints()];
-    this.destinations = [...this.tripPointsModel.getDestinations()];
-    this.offers = [...this.tripPointsModel.getOffers()];
+    this.#tripPointsModel = tripPointsModel;
+    this.#tripPoints = [...this.#tripPointsModel.tripPoints];
+    this.#destinations = [...this.#tripPointsModel.destinations];
+    this.#offers = [...this.#tripPointsModel.offers];
 
-    render(new SortingView(), this.tripContainer);
-    render(this.eventsList, this.tripContainer);
-    render(new EditingtripPointView(this.tripPoints[0], this.destinations, this.offers), this.eventsList.getElement());
+    render(new SortingView(), this.#tripContainer);
+    render(this.#tripPointsList, this.#tripContainer);
 
-    for (const tripPoint of this.tripPoints){
-      render(new tripPointView(tripPoint, this.destinations, this.offers), this.eventsList.getElement());
+    for (const tripPoint of this.#tripPoints){
+      this.#renderTripPoint(tripPoint);
     }
 
   }
+
+  #renderTripPoint = (tripPoint) => {
+    const tripPointComponent = new TripPointView(tripPoint, this.#destinations, this.#offers);
+    const pointEditComponent = new EditingTripPointView(tripPoint, this.#destinations, this.#offers);
+
+    const replaceTripPointToEditForm = () => {
+      replace(pointEditComponent, tripPointComponent);
+    };
+
+    const replaceEditFormToTripPoint = () => {
+      replace(tripPointComponent, pointEditComponent);
+    };
+
+    const onEscKeyDown = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        replaceEditFormToTripPoint();
+        document.removeEventListener('keydown', onEscKeyDown);
+      }
+    };
+
+    tripPointComponent.setEditClickHandler(() => {
+      replaceTripPointToEditForm();
+      document.addEventListener('keydown', onEscKeyDown);
+    });
+
+    pointEditComponent.setPreviewClickHandler(() => {
+      replaceEditFormToTripPoint();
+      document.removeEventListener('keydown', onEscKeyDown);
+    });
+
+    pointEditComponent.setFormSubmitHandler(() => {
+      replaceEditFormToTripPoint();
+      document.removeEventListener('keydown', onEscKeyDown);
+    });
+
+    render(tripPointComponent, this.#tripPointsList.element);
+  };
 }
+
+

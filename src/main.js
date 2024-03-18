@@ -1,6 +1,6 @@
+import { render } from './framework/render.js';
 import FiltersView from './view/filters-view.js';
 import TripPointPresenter from './presenter/trip-point-presenter.js';
-import { render } from './render.js';
 import TripPointsModel from './model/trip-point-model.js';
 import { getTripPoints, getDestinations, getOffersByType } from './mocks/trip-point.js';
 
