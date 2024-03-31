@@ -3,6 +3,7 @@ import EditingTripPointView from '../view/editing-trip-point-view.js';
 import SortingView from '../view/sorting-view.js';
 import { render, replace } from '../framework/render.js';
 import TripPointListView from '../view/trip-point-list-view.js';
+import NoTripPointView from '../view/no-trip-point-view.js';
 
 export default class TripPointPresenter {
   #tripPointsList = null;
@@ -23,13 +24,16 @@ export default class TripPointPresenter {
     this.#destinations = [...this.#tripPointsModel.destinations];
     this.#offers = [...this.#tripPointsModel.offers];
 
-    render(new SortingView(), this.#tripContainer);
-    render(this.#tripPointsList, this.#tripContainer);
-
-    for (const tripPoint of this.#tripPoints){
-      this.#renderTripPoint(tripPoint);
+    if (this.#tripPoints.length === 0) {
+      render(new NoTripPointView(), this.#tripContainer);
     }
-
+    else {
+      render(new SortingView(), this.#tripContainer);
+      render(this.#tripPointsList, this.#tripContainer);
+      for (const tripPoint of this.#tripPoints){
+        this.#renderTripPoint(tripPoint);
+      }
+    }
   }
 
   #renderTripPoint = (tripPoint) => {

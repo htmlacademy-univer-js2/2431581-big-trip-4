@@ -49,4 +49,25 @@ const getRandomElement = (elements) => {
   return elements[getRandomInteger(MIN, max)];
 };
 
-export { getRandomInteger, getRandomElement, humanizetripPointDueDate, getDuration, getDate, getDateTime, getTime };
+const isPointDatePast = (dateTo) => dayjs().diff(dateTo, 'minute') > 0;
+
+const isPointDateFuture = (dateFrom) => dateFrom.diff(dayjs(), 'minute') > 0;
+
+const isPointDatePresent = (dateFrom, dateTo) => dayjs().diff(dateFrom, 'minute') >= 0 && dateTo.diff(dayjs(), 'minute') >= 0;
+
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past'
+};
+
+const filter = {
+  [FilterType.EVERYTHING]: (tripPoints) => tripPoints,
+  [FilterType.FUTURE]: (tripPoints) => tripPoints.filter((tripPoint) => isPointDateFuture(tripPoint.dateFrom)),
+  [FilterType.PRESENT]: (tripPoints) => tripPoints.filter((tripPoint) => isPointDatePresent(tripPoint.dateFrom, tripPoint.dateTo)),
+  [FilterType.PAST]: (tripPoints) => tripPoints.filter((tripPoint) => isPointDatePast(tripPoint.dateTo)),
+};
+
+
+export { getRandomInteger, getRandomElement, humanizetripPointDueDate, getDuration, getDate, getDateTime, getTime, filter };
