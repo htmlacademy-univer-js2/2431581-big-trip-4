@@ -69,5 +69,18 @@ const filter = {
   [FilterType.PAST]: (tripPoints) => tripPoints.filter((tripPoint) => isPointDatePast(tripPoint.dateTo)),
 };
 
+const updateItem = (items, update) => {
+  const index = items.findIndex((item) => item.id === update.id);
 
-export { getRandomInteger, getRandomElement, humanizetripPointDueDate, getDuration, getDate, getDateTime, getTime, filter };
+  if (index === -1) {
+    return items;
+  }
+
+  return [
+    ...items.slice(0, index),
+    update,
+    ...items.slice(index + 1),
+  ];
+};
+
+export { getRandomInteger, getRandomElement, humanizetripPointDueDate, getDuration, getDate, getDateTime, getTime, filter, updateItem };
