@@ -2,7 +2,6 @@ import { render } from './framework/render.js';
 import BoardPresenter from './presenter/board-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import TripPointsModel from './model/trip-point-model.js';
-import { getTripPoints, getDestinations, getOffersByType } from './mocks/trip-point.js';
 import FilterModel from './model/filter-model.js';
 import NewPointButtonView from './view/new-trip-point-button-view.js';
 import DestinationsModel from './model/destinations-model.js';
